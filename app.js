@@ -2,7 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const dotenv = require("dotenv");
- 
+const adminRoutes = require("./routes/adminRoutes");
 const app = express();
 
 dotenv.config();
@@ -19,7 +19,7 @@ mongoose
   .then(() => console.log("MongoDB connected..."))
   .catch((err) => console.error("MongoDB connection error:", err));
 
- 
+app.use("/api/admin", adminRoutes);
 app.use((req, res, next) => {
   res.status(404).json({ message: "Route not found" });
 });
