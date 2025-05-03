@@ -1,0 +1,78 @@
+<div class="container">
+  <h1>{{ examId ? 'Edit Exam' : 'Create New Exam' }}</h1>
+  
+  <div *ngIf="isLoading" class="loading-spinner">
+    <!-- <mat-spinner></mat-spinner> -->
+  </div>
+  
+  <div *ngIf="error" class="error-message">
+    {{ error }}
+  </div>
+  
+  <form [formGroup]="examForm" (ngSubmit)="onSubmit()" *ngIf="!isLoading">
+    <div class="form-section">
+      <h2>Exam Details</h2>
+      <mat-form-field>
+        <mat-label>Exam Title</mat-label>
+        <input matInput formControlName="examTitle" required>
+        <mat-error *ngIf="examForm.get('examTitle')?.invalid">Exam title is required</mat-error>
+      </mat-form-field>
+      
+      <mat-form-field>
+        <mat-label>Exam Description</mat-label>
+        <textarea matInput formControlName="examDescription" required></textarea>
+        <mat-error *ngIf="examForm.get('examDescription')?.invalid">Exam description is required</mat-error>
+      </mat-form-field>
+      
+      <mat-form-field>
+        <mat-label>Duration (minutes)</mat-label>
+        <input matInput type="number" formControlName="duration" required min="1">
+        <mat-error *ngIf="examForm.get('duration')?.invalid">
+          Duration must be at least 1 minute
+        </mat-error>
+      </mat-form-field>
+    </div>
+    
+    <h2>Questions</h2>
+    <div formArrayName="questions">
+      <div *ngFor="let question of questions.controls; let i=index" [formGroupName]="i" class="question-container">
+        <h3>Question {{ i + 1 }}</h3>
+        <mat-form-field>
+          <mat-label>Question Text</mat-label>
+          <input matInput formControlName="questionText" required>
+          <mat-error *ngIf="questions.at(i).get('questionText')?.invalid">Question text is required</mat-error>
+        </mat-form-field>
+        <div formArrayName="choices">
+          <div *ngFor="let choice of getChoices(i).controls; let j=index" class="choice-container">
+            <mat-form-field>
+              <mat-label>Choice {{ j + 1 }}</mat-label>
+              <input matInput [formControlName]="j" required>
+              <mat-error *ngIf="getChoices(i).at(j).invalid">Choice is required</mat-error>
+              <button mat-icon-button type="button" (click)="removeChoice(i, j)" *ngIf="getChoices(i).length > 2">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </mat-form-field>
+          </div>
+          <button mat-button type="button" (click)="addChoice(i)">Add Choice</button>
+        </div>
+        <mat-form-field>
+          <mat-label>Correct Answer</mat-label>
+          <mat-select formControlName="correctAnswer" required>
+            <mat-option *ngFor="let choice of getChoices(i).controls; let j=index" [value]="j+1">
+              Choice {{ j + 1 }}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="questions.at(i).get('correctAnswer')?.invalid">Correct answer is required</mat-error>
+        </mat-form-field>
+        <button mat-icon-button color="warn" type="button" (click)="removeQuestion(i)" *ngIf="questions.length > 0">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
+    </div>
+    <button mat-button type="button" (click)="addQuestion()">Add Question</button>
+    <div class="form-actions">
+      <button mat-raised-button color="primary" type="submit" [disabled]="!isFormValid()">Save Exam</button>
+      <button mat-raised-button color="warn" type="button" routerLink="/exams">Cancel</button>
+    </div>
+  </form>
+</div>

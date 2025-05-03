@@ -1,0 +1,71 @@
+<div class="question-form-container fade-in">
+  <h1>{{ questionId ? 'Edit Question' : 'Add New Question' }}</h1>
+  
+  <div *ngIf="isLoading" class="loading-spinner">
+    <mat-spinner diameter="40"></mat-spinner>
+    <p>Loading...</p>
+  </div>
+  
+  <div *ngIf="error" class="error-message">
+    <mat-icon>error</mat-icon> {{ error }}
+  </div>
+  
+  <form [formGroup]="questionForm" (ngSubmit)="onSubmit()" *ngIf="!isLoading">
+    <input type="hidden" formControlName="examId">
+    
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Question Text</mat-label>
+      <input matInput formControlName="questionText" required>
+      <mat-icon matSuffix>help</mat-icon>
+      <mat-error *ngIf="questionForm.get('questionText')?.invalid && questionForm.get('questionText')?.touched">
+        Question text is required
+      </mat-error>
+    </mat-form-field>
+    
+    <div class="choices-section">
+      <h3>Choices</h3>
+      <div formArrayName="choices">
+        <div *ngFor="let choice of choices.controls; let i=index" class="choice-container">
+          <mat-form-field appearance="outline" class="choice-field">
+            <mat-label>Choice {{ i + 1 }}</mat-label>
+            <input matInput [formControlName]="i" required>
+            <mat-icon matSuffix>check_box_outline_blank</mat-icon>
+            <mat-error *ngIf="choices.at(i).invalid && choices.at(i).touched">
+              Choice is required
+            </mat-error>
+          </mat-form-field>
+          <button mat-icon-button type="button" (click)="removeChoice(i)" *ngIf="choices.length > 2" class="remove-choice-btn">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+      </div>
+      <button mat-stroked-button type="button" (click)="addChoice()" class="add-choice-btn">
+        <mat-icon>add</mat-icon> Add Choice
+      </button>
+    </div>
+    
+    <div class="correct-answer-section">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Correct Answer</mat-label>
+        <mat-select formControlName="correctAnswer" required>
+          <mat-option *ngFor="let choice of choices.controls; let i=index" [value]="i+1">
+            Choice {{ i + 1 }}
+          </mat-option>
+        </mat-select>
+        <mat-icon matSuffix>check_circle</mat-icon>
+        <mat-error *ngIf="questionForm.get('correctAnswer')?.invalid && questionForm.get('correctAnswer')?.touched">
+          Please select the correct answer
+        </mat-error>
+      </mat-form-field>
+    </div>
+    
+    <div class="form-actions">
+      <button mat-raised-button color="primary" type="submit" [disabled]="questionForm.invalid">
+        <mat-icon>save</mat-icon> {{ questionId ? 'Update Question' : 'Add Question' }}
+      </button>
+      <button mat-stroked-button type="button" routerLink="/exams">
+        <mat-icon>cancel</mat-icon> Cancel
+      </button>
+    </div>
+  </form>
+</div>

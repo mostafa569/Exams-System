@@ -1,0 +1,106 @@
+.question-form-container {
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 30px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.question-form-container h1 {
+  text-align: center;
+  color: #3f51b5;
+  margin-bottom: 30px;
+  font-weight: 500;
+}
+
+.full-width {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.choice-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+  background-color: #f9f9f9;
+  padding: 10px;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+}
+
+.choice-container:hover {
+  background-color: #f0f0f0;
+}
+
+.choice-field {
+  flex: 1;
+  margin-right: 10px;
+}
+
+.add-choice-btn {
+  margin-top: 15px;
+  margin-bottom: 25px;
+  background-color: #e0e0e0;
+  color: #555;
+}
+
+.add-choice-btn:hover {
+  background-color: #d0d0d0;
+}
+
+.form-actions {
+  margin-top: 30px;
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+}
+
+.form-actions button {
+  min-width: 120px;
+}
+
+.loading-spinner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 50px 0;
+}
+
+.loading-spinner p {
+  margin-top: 15px;
+  color: #3f51b5;
+}
+
+.error-message {
+  background-color: #ffebee;
+  color: #c62828;
+  padding: 15px;
+  border-radius: 5px;
+  margin-bottom: 25px;
+  text-align: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.choices-section {
+  background-color: #f5f5f5;
+  padding: 20px;
+  border-radius: 5px;
+  margin-bottom: 25px;
+}
+
+.choices-section h3 {
+  margin-top: 0;
+  color: #555;
+  font-weight: 500;
+  margin-bottom: 15px;
+}
+
+.remove-choice-btn {
+  color: #f44336;
+}
+
+.correct-answer-section {
+  margin-top: 25px;
+}

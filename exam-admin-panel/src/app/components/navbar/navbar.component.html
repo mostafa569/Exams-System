@@ -1,0 +1,22 @@
+<mat-toolbar color="primary" class="navbar">
+  <div class="logo-container">
+    <mat-icon class="logo-icon">school</mat-icon>
+    <span class="logo-text">Exam Management</span>
+  </div>
+  <span class="spacer"></span>
+  <ng-container *ngIf="isLoggedIn(); else notLoggedIn">
+    <div class="nav-links">
+      <a mat-button routerLink="/exams" routerLinkActive="active-link">
+        <mat-icon>assignment</mat-icon> Exams
+      </a>
+      <button mat-button (click)="logout()" class="logout-btn">
+        <mat-icon>exit_to_app</mat-icon> Logout
+      </button>
+    </div>
+  </ng-container>
+  <ng-template #notLoggedIn>
+    <a mat-button routerLink="/login">
+      <mat-icon>login</mat-icon> Login
+    </a>
+  </ng-template>
+  </mat-toolbar>

@@ -1,0 +1,88 @@
+<div class="exam-view-container fade-in">
+  <div *ngIf="loading" class="loading-container">
+    <mat-spinner diameter="40"></mat-spinner>
+    <p>Loading exam details...</p>
+  </div>
+
+  <mat-card *ngIf="error">
+    <mat-card-content class="error-message">
+      <mat-icon>error</mat-icon> {{ error }}
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-raised-button color="primary" (click)="goBack()">Back to Exams</button>
+    </mat-card-actions>
+  </mat-card>
+
+  <div *ngIf="exam && !loading && !error">
+    <mat-card class="exam-header">
+      <mat-card-header>
+        <mat-card-title>{{ exam.examTitle }}</mat-card-title>
+        <mat-card-subtitle>Duration: {{ exam.duration }} minutes</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <p>{{ exam.examDescription }}</p>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-stroked-button (click)="goBack()">
+          <mat-icon>arrow_back</mat-icon> Back
+        </button>
+        <button mat-stroked-button color="primary" (click)="editExam()">
+          <mat-icon>edit</mat-icon> Edit Exam
+        </button>
+        <button mat-raised-button color="accent" [routerLink]="['/create-question', exam._id]">
+          <mat-icon>add</mat-icon> Add Question
+        </button>
+      </mat-card-actions>
+    </mat-card>
+
+    <div class="exam-stats" *ngIf="exam.questions">
+      <mat-icon>question_answer</mat-icon>
+      <p>Number of questions: <strong>{{ exam.questions.length }}</strong></p>
+    </div>
+    
+    <h2>Questions</h2>
+    
+    <div *ngIf="exam.questions && exam.questions.length > 0; else noQuestions">
+      <mat-card *ngFor="let question of exam.questions; let i = index" class="question-card">
+        <mat-card-header>
+          <mat-card-title>Question {{ i + 1 }}</mat-card-title>
+          <div class="question-actions">
+            <button mat-icon-button color="accent" [routerLink]="['/edit-question', question._id]" matTooltip="Edit Question">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button color="warn" (click)="deleteQuestion(question._id!)" matTooltip="Delete Question">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+        </mat-card-header>
+        <mat-card-content>
+          <p class="question-text">{{ question.questionText }}</p>
+          
+          <h3>Choices:</h3>
+          <mat-list>
+            <mat-list-item *ngFor="let choice of question.choices; let j = index" 
+                          [class.correct-answer]="j+1 === question.correctAnswer">
+              {{ j + 1 }}. {{ choice }}
+              <mat-icon *ngIf="j+1 === question.correctAnswer" color="primary">check_circle</mat-icon>
+            </mat-list-item>
+          </mat-list>
+          
+          <p class="correct-answer-text">
+            <strong>Correct Answer:</strong> Choice {{ question.correctAnswer }} ({{ question.choices[question.correctAnswer-1] }})
+          </p>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    
+    <ng-template #noQuestions>
+      <mat-card class="no-questions-card">
+        <mat-icon>help_outline</mat-icon>
+        <p>This exam doesn't have any questions yet.</p>
+        <button mat-raised-button color="primary" [routerLink]="['/create-question', exam._id]">
+          <mat-icon>add</mat-icon> Add Questions
+        </button>
+      </mat-card>
+    </ng-template>
+  </div>
+</div>
+
