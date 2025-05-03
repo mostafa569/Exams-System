@@ -93,7 +93,7 @@ export class ExamFormComponent implements OnInit {
           }
           
           // Add questions to form
-          exam.questions.forEach(question => {
+          exam.questions.forEach((question: any) => {
             questionsArray.push(this.createQuestionFormGroup({
               _id: question._id,
               examId: question.examId || this.examId || '',
@@ -254,7 +254,7 @@ export class ExamFormComponent implements OnInit {
     console.log('Questions to create:', questionsData);
     
     this.examService.createExam(examData).subscribe({
-      next: (newExam) => {
+      next: (newExam: Exam) => {
         console.log('Exam created successfully:', newExam);
         
         if (!questionsData.length) {
@@ -291,7 +291,7 @@ export class ExamFormComponent implements OnInit {
             this.router.navigate(['/exams']);
           });
       },
-      error: (err) => {
+      error: (err: any) => {
         console.error('Error creating exam:', err);
         this.error = 'Failed to create exam. Please try again.';
         this.isLoading = false;
@@ -301,7 +301,7 @@ export class ExamFormComponent implements OnInit {
   
   updateExistingExam(examData: Exam, questionsData: any[]): void {
     this.examService.editExam(this.examId!, examData).subscribe({
-      next: (updatedExam) => {
+      next: (updatedExam: Exam) => {
         console.log('Exam updated successfully:', updatedExam);
         
         if (!questionsData.length) {
@@ -351,7 +351,7 @@ export class ExamFormComponent implements OnInit {
             this.router.navigate(['/exams']);
           });
       },
-      error: (err) => {
+      error: (err: any) => {
         console.error('Error updating exam:', err);
         this.error = 'Failed to update exam. Please try again.';
         this.isLoading = false;

@@ -107,7 +107,7 @@ export class ExamListComponent implements OnInit {
           console.log('Exam deleted successfully:', examId);
           this.exams = this.exams.filter(exam => exam._id !== examId);
         },
-        error: (err) => {
+        error: (err: any) => {
           console.error('Error deleting exam:', err);
           alert('Failed to delete exam. Please try again.');
         }

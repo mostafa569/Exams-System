@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { environment } from '../../environments/environment';
 import { Exam } from '../models/exam.model';
-import { AuthService } from './auth.service';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -11,18 +10,17 @@ import { AuthService } from './auth.service';
 export class ExamService {
   private apiUrl = environment.apiUrl;
 
-  constructor(private http: HttpClient, private authService: AuthService) {}
+  constructor(private http: HttpClient) {}
 
-  private getHeaders(): HttpHeaders {
-    const token = this.authService.getToken();
+  getHeaders(): HttpHeaders {
+    const token = localStorage.getItem('token');
     return new HttpHeaders({
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token || ''}`
+      'Authorization': `Bearer ${token}`
     });
   }
 
   getExams(): Observable<Exam[]> {
-    console.log('Fetching exams from:', `${this.apiUrl}/admin/exams`);
     return this.http.get<Exam[]>(`${this.apiUrl}/admin/exams`, {
       headers: this.getHeaders()
     });
@@ -34,20 +32,26 @@ export class ExamService {
     });
   }
 
-  createExam(exam: Exam): Observable<Exam> {
-    return this.http.post<Exam>(`${this.apiUrl}/admin/exams`, exam, {
+  createExam(examData: Exam): Observable<Exam> {
+    return this.http.post<Exam>(`${this.apiUrl}/admin/exams`, examData, {
       headers: this.getHeaders()
     });
   }
 
-  editExam(examId: string, exam: Exam): Observable<Exam> {
-    return this.http.put<Exam>(`${this.apiUrl}/admin/exams/${examId}`, exam, {
+  editExam(examId: string, examData: Exam): Observable<Exam> {
+    return this.http.put<Exam>(`${this.apiUrl}/admin/exams/${examId}`, examData, {
       headers: this.getHeaders()
     });
   }
 
   deleteExam(examId: string): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/admin/exams/${examId}`, {
+    return this.http.delete<any>(`${this.apiUrl}/admin/exams/${examId}`, {
+      headers: this.getHeaders()
+    });
+  }
+
+  getExamResults(examId: string): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/admin/exams/${examId}/results`, {
       headers: this.getHeaders()
     });
   }

@@ -3,7 +3,9 @@ export interface Exam {
   examTitle: string;
   examDescription: string;
   duration: number;
-  questions?: Question[];
+  questions?: any[];
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 export interface Question {

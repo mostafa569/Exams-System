@@ -6,6 +6,9 @@
   <span class="spacer"></span>
   <ng-container *ngIf="isLoggedIn(); else notLoggedIn">
     <div class="nav-links">
+      <a mat-button routerLink="/dashboard" routerLinkActive="active-link">
+        <mat-icon>dashboard</mat-icon> Dashboard
+      </a>
       <a mat-button routerLink="/exams" routerLinkActive="active-link">
         <mat-icon>assignment</mat-icon> Exams
       </a>

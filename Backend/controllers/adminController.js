@@ -1,5 +1,6 @@
 const Exam = require('../models/examModel');
 const Question = require('../models/questionModel');
+const Result = require('../models/resultModel');
 
  
 exports.getExams = async (req, res) => {
@@ -211,6 +212,23 @@ exports.deleteQuestion = async (req, res) => {
   } catch (error) {
   
     res.status(500).json({ message: 'Error deleting question', error: error.message });
+  }
+};
+
+// Add this method to the adminController
+exports.getExamResults = async (req, res) => {
+  try {
+    const { examId } = req.params;
+    
+    // Find all results for this exam
+    const results = await Result.find({ examId })
+      .populate('userId', 'name email') // Populate user details
+      .sort({ dateTaken: -1 }); // Sort by most recent
+    
+    res.status(200).json(results);
+  } catch (error) {
+    console.error('Error fetching exam results:', error);
+    res.status(500).json({ message: 'Error fetching exam results', error: error.message });
   }
 };
 

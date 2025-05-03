@@ -17,4 +17,6 @@ router.post("/questions", isAuthAdmin, adminController.createQuestion);
 router.put("/questions/:questionId", isAuthAdmin, adminController.editQuestion);
 router.delete("/questions/:questionId", isAuthAdmin, adminController.deleteQuestion);
 
+router.get("/exams/:examId/results", isAuthAdmin, adminController.getExamResults);
+
 module.exports = router;
